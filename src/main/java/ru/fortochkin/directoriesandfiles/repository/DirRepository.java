@@ -14,34 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.fortochkin.directoriesandfiles.controller;
+package ru.fortochkin.directoriesandfiles.repository;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
 import ru.fortochkin.directoriesandfiles.entity.DirEntity;
-import ru.fortochkin.directoriesandfiles.service.DirService;
 
 /**
  *
  * @author Fedor Fortochkin f_fortochkin@inbox.ru
  */
-@RestController
-@RequestMapping("/content")
-public class ContentController {
-    
-
-    @Autowired
-    DirService dirService;
-    
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
-    public List<DirEntity> getRootContent(){
-        return dirService.getRootContent();
-    }
-    
-    
+@Repository
+public interface DirRepository extends JpaRepository<DirEntity, Long> {
+    List<DirEntity> findAll();
 }

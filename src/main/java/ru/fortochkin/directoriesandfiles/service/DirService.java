@@ -14,34 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ru.fortochkin.directoriesandfiles.controller;
-
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import ru.fortochkin.directoriesandfiles.entity.DirEntity;
-import ru.fortochkin.directoriesandfiles.service.DirService;
+package ru.fortochkin.directoriesandfiles.service;
 
 /**
  *
  * @author Fedor Fortochkin f_fortochkin@inbox.ru
  */
-@RestController
-@RequestMapping("/content")
-public class ContentController {
-    
 
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import ru.fortochkin.directoriesandfiles.entity.DirEntity;
+import ru.fortochkin.directoriesandfiles.repository.DirRepository;
+
+@Service
+public class DirService {
+    
     @Autowired
-    DirService dirService;
+    DirRepository dirRepository;
     
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
+    
     public List<DirEntity> getRootContent(){
-        return dirService.getRootContent();
+        List<DirEntity> list = dirRepository.findAll();
+        list.sort(null);
+        return list;
     }
-    
     
 }
