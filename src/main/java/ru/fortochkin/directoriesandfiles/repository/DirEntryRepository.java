@@ -20,14 +20,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.fortochkin.directoriesandfiles.entity.DirEntity;
+import ru.fortochkin.directoriesandfiles.entity.DirEntryEntity;
 
 /**
  *
  * @author Fedor Fortochkin f_fortochkin@inbox.ru
  */
 @Repository
-public interface DirRepository extends JpaRepository<DirEntity, Long> {
-    List<DirEntity> findAll();
-    DirEntity findById(Long id);
-    DirEntity save(DirEntity e);
+public interface DirEntryRepository extends JpaRepository<DirEntryEntity, Long> {
+    List<DirEntryEntity> findByDir(DirEntity e);
 }

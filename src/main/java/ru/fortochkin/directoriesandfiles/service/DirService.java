@@ -22,11 +22,15 @@ package ru.fortochkin.directoriesandfiles.service;
  */
 
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.fortochkin.directoriesandfiles.entity.DirEntity;
+import ru.fortochkin.directoriesandfiles.entity.DirEntryEntity;
+import ru.fortochkin.directoriesandfiles.entity.DirEntryEntity.Type;
+import ru.fortochkin.directoriesandfiles.repository.DirEntryRepository;
 import ru.fortochkin.directoriesandfiles.repository.DirRepository;
 
 @Service
@@ -35,11 +39,44 @@ public class DirService {
     @Autowired
     DirRepository dirRepository;
     
+    @Autowired
+    DirEntryRepository dirEntryRepository;
+    
     
     public List<DirEntity> getRootContent(){
         List<DirEntity> list = dirRepository.findAll();
+        list.stream().forEach( item ->{
+            Long sizeOfFiles = item.getEntries().stream()
+                    .filter(e -> e.getType() == Type.FILE)
+                    .map(a -> a.getSize())
+                    .reduce(0L, Long::sum);
+            Long filesCount = item.getEntries().stream()
+                    .filter(e -> e.getType() == Type.FILE)
+                    .count();
+            Long dirsCount = item.getEntries().stream()
+                    .filter(e -> e.getType() == Type.DIRECTORY)
+                    .count();
+            item.setDirsCount(dirsCount);
+            item.setFilesCount(filesCount);
+            item.setContentSize(sizeOfFiles);
+        });
         list.sort(null);
         return list;
     }
     
+    public List<DirEntryEntity> getDirectoryContent(Long id){
+        DirEntity dir = dirRepository.findById(id);
+        return dirEntryRepository.findByDir(dir);
+    }
+    
+    public DirEntity addDirectory(String dir){
+        DirEntity entity = new DirEntity();
+        entity.setBaseDir(dir);
+        entity.setContentSize(0L);
+        entity.setDirsCount(0L);
+        entity.setEntries(null);
+        entity.setFilesCount(0L);
+        entity.setDate(new Date());
+        return dirRepository.save(entity);
+    } 
 }
