@@ -69,10 +69,10 @@ public class DirEntityTest {
             setId(7L);
         }};
         
-        Assert.assertTrue(e1.compareTo(e2) > 0);
+        Assert.assertTrue(e1.compareTo(e2) < 0);
         Assert.assertTrue(e2.compareTo(e3) < 0);
-        Assert.assertTrue(e4.compareTo(e5) < 0);
-        Assert.assertTrue(e6.compareTo(e7) < 0);
+        Assert.assertTrue(e4.compareTo(e5) > 0);
+        Assert.assertTrue(e6.compareTo(e7) > 0);
     }
     
 }

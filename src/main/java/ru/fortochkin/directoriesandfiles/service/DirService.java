@@ -22,8 +22,10 @@ package ru.fortochkin.directoriesandfiles.service;
  */
 
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -66,9 +68,12 @@ public class DirService {
     
     public List<DirEntryEntity> getDirectoryContent(Long id){
         DirEntity dir = dirRepository.findById(id);
-        return dirEntryRepository.findByDir(dir);
+        List<DirEntryEntity> list = dirEntryRepository.findByDir(dir);
+        list.sort(null);
+        return list;
     }
     
+    @Transactional
     public DirEntity addDirectory(String dir){
         DirEntity entity = new DirEntity();
         entity.setBaseDir(dir);

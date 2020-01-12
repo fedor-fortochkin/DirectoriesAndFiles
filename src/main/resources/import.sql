@@ -1,5 +1,5 @@
-INSERT INTO dir(id,date, base_dir) VALUES(1,TIMESTAMP ( '2016-09-14', '18:03:00' ),'/opt/tomcat/temp');
-INSERT INTO dir(id,date, base_dir) VALUES(2,TIMESTAMP ( '2016-09-14', '10:27:00' ),'/opt/tomcat/temp');
+INSERT INTO dir(id,date, base_dir) VALUES(1,TIMESTAMP ( '2016-09-14','18:03:00' ),'/opt/tomcat/temp');
+INSERT INTO dir(id,date, base_dir) VALUES(2,TIMESTAMP ( '2016-09-14','10:27:00' ),'/opt/tomcat/temp');
 
 INSERT INTO dir_entry(name,type,dir_id,size) VALUES('innerTemp','DIRECTORY',1,null);
 INSERT INTO dir_entry(name,type,dir_id,size) VALUES('X-FILES','DIRECTORY',1,null);

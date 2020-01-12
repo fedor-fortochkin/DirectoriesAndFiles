@@ -42,8 +42,8 @@ public class DirEntryEntityTest {
         e3.setName("bbbbb");
         e3.setId(2L);
         
-        Assert.assertTrue(e2.compareTo(e1) > 0);
-        Assert.assertFalse(e1.compareTo(e2) > 0);
+        Assert.assertTrue(e2.compareTo(e1) < 0);
+        Assert.assertFalse(e1.compareTo(e2) < 0);
         Assert.assertTrue(e2.compareTo(e3) == 0); 
     }
     
@@ -91,10 +91,10 @@ public class DirEntryEntityTest {
             setId(7L);
         }};
         
-        Assert.assertTrue(e1.compareTo(e2) > 0);
+        Assert.assertTrue(e1.compareTo(e2) < 0);
         Assert.assertTrue(e2.compareTo(e3) < 0);
-        Assert.assertTrue(e4.compareTo(e5) < 0);
-        Assert.assertTrue(e6.compareTo(e7) < 0);
+        Assert.assertTrue(e4.compareTo(e5) > 0);
+        Assert.assertTrue(e6.compareTo(e7) > 0);
     }
     
 }

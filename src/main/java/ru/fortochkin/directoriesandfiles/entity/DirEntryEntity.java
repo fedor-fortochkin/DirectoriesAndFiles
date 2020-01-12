@@ -64,9 +64,9 @@ public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
         }
         
         if (this.getType() == DirEntryEntity.Type.DIRECTORY && o.getType() == DirEntryEntity.Type.FILE){
-            return 1;
-        }else if(this.getType() == DirEntryEntity.Type.FILE && o.getType() == DirEntryEntity.Type.DIRECTORY){
             return -1;
+        }else if(this.getType() == DirEntryEntity.Type.FILE && o.getType() == DirEntryEntity.Type.DIRECTORY){
+            return 1;
         }else{
             Pattern pattern = Pattern.compile("\\d+");
             Matcher thisMatcher = pattern.matcher(this.getName());
@@ -77,9 +77,9 @@ public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
                     int thisValue = Integer.valueOf(thisMatcher.group());
                     int otherValue = Integer.valueOf(oMatcher.group());
                     if (thisValue > otherValue){
-                        return 1;
-                    }else if (thisValue < otherValue){
                         return -1;
+                    }else if (thisValue < otherValue){
+                        return 1;
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package ru.fortochkin.directoriesandfiles.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     private Date date;
     
     @Column(name = "baseDir", nullable = false)
@@ -73,9 +75,9 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
                 int thisValue = Integer.valueOf(thisMatcher.group());
                 int otherValue = Integer.valueOf(oMatcher.group());
                 if (thisValue > otherValue){
-                    return 1;
-                }else if (thisValue < otherValue){
                     return -1;
+                }else if (thisValue < otherValue){
+                    return 1;
                 }
             }
         }
