@@ -30,10 +30,11 @@ import lombok.With;
 @Setter @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@With(AccessLevel.PRIVATE)
 @Table(name="dir_entry")
-public class DirEntryEntity implements Serializable,Comparable<DirEntryEntity>{
-    enum Type{
+public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
+
+    
+    public enum Type{
         FILE,DIRECTORY
     }
     
@@ -61,28 +62,26 @@ public class DirEntryEntity implements Serializable,Comparable<DirEntryEntity>{
     public boolean equals(DirEntryEntity e){
         return this.id == e.id;
     }
-
+    
     @Override
-    public int compareTo(DirEntryEntity e) {
-        if (this.equals(e)){
+    public int compareTo(DirEntryEntity o) {
+        if (this.equals(o)){
             return 0;
         }
         
-        if (this.type == Type.DIRECTORY && e.getType() == Type.FILE){
+        if (this.getType() == DirEntryEntity.Type.DIRECTORY && o.getType() == DirEntryEntity.Type.FILE){
             return 1;
-        }else if(this.type == Type.FILE && e.getType() == Type.DIRECTORY){
+        }else if(this.getType() == DirEntryEntity.Type.FILE && o.getType() == DirEntryEntity.Type.DIRECTORY){
             return -1;
         }else{
-            Pattern pattern = Pattern.compile("^[^0-9]*([0-9]+)[^0-9]*$");
-            Matcher thisMatcher = pattern.matcher(this.name);
-            Matcher otherMatcher = pattern.matcher(e.getName());
+            Pattern pattern = Pattern.compile("\\d+");
+            Matcher thisMatcher = pattern.matcher(this.getName());
+            Matcher oMatcher = pattern.matcher(o.getName());
             
-            while(!thisMatcher.hitEnd() || !otherMatcher.hitEnd()){
-                thisMatcher.find();
-                otherMatcher.find();
-                if (thisMatcher.start() == otherMatcher.start()){
+            while(thisMatcher.find() && oMatcher.find()){
+                if (thisMatcher.start() == oMatcher.start()){
                     int thisValue = Integer.valueOf(thisMatcher.group());
-                    int otherValue = Integer.valueOf(otherMatcher.group());
+                    int otherValue = Integer.valueOf(oMatcher.group());
                     if (thisValue > otherValue){
                         return 1;
                     }else if (thisValue < otherValue){
@@ -90,7 +89,7 @@ public class DirEntryEntity implements Serializable,Comparable<DirEntryEntity>{
                     }
                 }
             }
-            return this.name.toLowerCase().compareTo(e.getName().toLowerCase());
+            return this.getName().toLowerCase().compareTo(o.getName().toLowerCase());
         }
     }
 }

@@ -1,10 +1,13 @@
 package ru.fortochkin.directoriesandfiles.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,9 +32,8 @@ import lombok.With;
 @Setter @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@With(AccessLevel.PRIVATE)
 @Table(name="dir")
-public class DirEntity{
+public class DirEntity implements Serializable,Comparable<DirEntity>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -55,5 +57,34 @@ public class DirEntity{
     
     @Transient
     Integer contentSize;
+    
+    public boolean equals(DirEntryEntity e){
+        return this.id == e.id;
+    }
+        
+    @Override
+    public int compareTo(DirEntity o) {
+        if (this.equals(o)){
+            return 0;
+        }
+        
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher thisMatcher = pattern.matcher(this.getBaseDir());
+        Matcher oMatcher = pattern.matcher(o.getBaseDir());
+
+        while(thisMatcher.find() && oMatcher.find()){
+            if (thisMatcher.start() == oMatcher.start()){
+                int thisValue = Integer.valueOf(thisMatcher.group());
+                int otherValue = Integer.valueOf(oMatcher.group());
+                if (thisValue > otherValue){
+                    return 1;
+                }else if (thisValue < otherValue){
+                    return -1;
+                }
+            }
+        }
+        return this.getBaseDir().toLowerCase().compareTo(o.getBaseDir().toLowerCase());
+    }
+    
     
 }

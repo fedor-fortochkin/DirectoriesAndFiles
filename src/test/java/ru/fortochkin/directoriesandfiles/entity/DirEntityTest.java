@@ -23,29 +23,7 @@ import org.junit.Test;
  *
  * @author Fedor Fortochkin f_fortochkin@inbox.ru
  */
-public class DirEntryEntityTest {
-    
-    @Test
-    public void testSortFileVersusDir(){
-        DirEntryEntity e1 = new DirEntryEntity();
-        e1.setType(DirEntryEntity.Type.FILE);
-        e1.setName("aaaaa");
-        e1.setId(1L);
-        
-        DirEntryEntity e2 = new DirEntryEntity();
-        e2.setType(DirEntryEntity.Type.DIRECTORY);
-        e2.setName("bbbbb");
-        e2.setId(2L);
-        
-        DirEntryEntity e3 = new DirEntryEntity();
-        e3.setType(DirEntryEntity.Type.DIRECTORY);
-        e3.setName("bbbbb");
-        e3.setId(2L);
-        
-        Assert.assertTrue(e2.compareTo(e1) > 0);
-        Assert.assertFalse(e1.compareTo(e2) > 0);
-        Assert.assertTrue(e2.compareTo(e3) == 0); 
-    }
+public class DirEntityTest {
     
     @Test
     public void testSortIntegerInString(){        
