@@ -13,16 +13,7 @@ function addDirectory(dirname){
 
 function getRootContent(){
     
-    data = $.ajax({
-        type: "get",
-        url: endpoint,
-        success: function(response) {
-            console.log(response);
-        }
-    });
-
-    
-    //data = jQuery.get(endpoint);
+    data = $.get(endpoint);
     data = [
         { 
           id: 1,
