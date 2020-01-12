@@ -20,12 +20,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter @Getter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="dir")
@@ -45,6 +47,7 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
     
     @OneToMany(mappedBy="dir", cascade = CascadeType.ALL)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<DirEntryEntity> entries;
     
     @Transient
@@ -56,9 +59,9 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
     @Transient
     Long contentSize;
     
-    public boolean equals(DirEntryEntity e){
-        return Objects.equals(this.id, e.id);
-    }
+//    public boolean equals(DirEntryEntity e){
+//        return Objects.equals(this.id, e.id);
+//    }
         
     @Override
     public int compareTo(DirEntity o) {
@@ -75,9 +78,9 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
                 int thisValue = Integer.valueOf(thisMatcher.group());
                 int otherValue = Integer.valueOf(oMatcher.group());
                 if (thisValue > otherValue){
-                    return -1;
-                }else if (thisValue < otherValue){
                     return 1;
+                }else if (thisValue < otherValue){
+                    return -1;
                 }
             }
         }

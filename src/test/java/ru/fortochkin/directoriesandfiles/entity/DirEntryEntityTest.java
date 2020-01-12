@@ -16,85 +16,44 @@
  */
 package ru.fortochkin.directoriesandfiles.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+import ru.fortochkin.directoriesandfiles.entity.DirEntryEntity.Type;
 
 /**
  *
  * @author Fedor Fortochkin f_fortochkin@inbox.ru
  */
 public class DirEntryEntityTest {
-    
-    @Test
-    public void testSortFileVersusDir(){
-        DirEntryEntity e1 = new DirEntryEntity();
-        e1.setType(DirEntryEntity.Type.FILE);
-        e1.setName("aaaaa");
-        e1.setId(1L);
         
-        DirEntryEntity e2 = new DirEntryEntity();
-        e2.setType(DirEntryEntity.Type.DIRECTORY);
-        e2.setName("bbbbb");
-        e2.setId(2L);
-        
-        DirEntryEntity e3 = new DirEntryEntity();
-        e3.setType(DirEntryEntity.Type.DIRECTORY);
-        e3.setName("bbbbb");
-        e3.setId(2L);
-        
-        Assert.assertTrue(e2.compareTo(e1) < 0);
-        Assert.assertFalse(e1.compareTo(e2) < 0);
-        Assert.assertTrue(e2.compareTo(e3) == 0); 
-    }
-    
     @Test
     public void testSortIntegerInString(){        
-        DirEntryEntity e1 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bb10056ccc");
-            setId(1L);
+        List<DirEntryEntity> expectation = new ArrayList<DirEntryEntity>(){{
+            add(new DirEntryEntity(1L,"innerTemp",Type.DIRECTORY,null,null));
+            add(new DirEntryEntity(2L,"X-FILES",Type.DIRECTORY,null,null));
+            add(new DirEntryEntity(3L,"f.txt",Type.FILE,null,null));
+            add(new DirEntryEntity(4L,"F1.txt",Type.FILE,null,null));
+            add(new DirEntryEntity(5L,"f4_99.JPG",Type.FILE,null,null));
+            add(new DirEntryEntity(6L,"f4_00127.pdf",Type.FILE,null,null));
+            add(new DirEntryEntity(7L,"f0008.doc",Type.FILE,null,null));
+            add(new DirEntryEntity(8L,"function.cpp",Type.FILE,null,null));
         }};
         
-        DirEntryEntity e2 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bb000576cc");
-            setId(2L);
+        List<DirEntryEntity> unsorted = new ArrayList<DirEntryEntity>(){{
+            add(new DirEntryEntity(1L,"innerTemp",Type.DIRECTORY,null,null));
+            add(new DirEntryEntity(6L,"f4_00127.pdf",Type.FILE,null,null));
+            add(new DirEntryEntity(3L,"f.txt",Type.FILE,null,null));
+            add(new DirEntryEntity(4L,"F1.txt",Type.FILE,null,null));
+            add(new DirEntryEntity(2L,"X-FILES",Type.DIRECTORY,null,null));
+            add(new DirEntryEntity(8L,"function.cpp",Type.FILE,null,null));
+            add(new DirEntryEntity(5L,"f4_99.JPG",Type.FILE,null,null));
+            add(new DirEntryEntity(7L,"f0008.doc",Type.FILE,null,null));
         }};
         
-        DirEntryEntity e3 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bbb10056cc");
-            setId(3L);
-        }};
-        
-        DirEntryEntity e4 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bbb10056cc123sdfs");
-            setId(4L);
-        }};
-        
-        DirEntryEntity e5 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bbb10056cc0124qweq");
-            setId(5L);
-        }};
-        
-        DirEntryEntity e6 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bbb10056cc123sdfs");
-            setId(6L);
-        }};
-        
-        DirEntryEntity e7 = new DirEntryEntity(){{
-            setType(DirEntryEntity.Type.DIRECTORY);
-            setName("bbb010056555");
-            setId(7L);
-        }};
-        
-        Assert.assertTrue(e1.compareTo(e2) < 0);
-        Assert.assertTrue(e2.compareTo(e3) < 0);
-        Assert.assertTrue(e4.compareTo(e5) > 0);
-        Assert.assertTrue(e6.compareTo(e7) > 0);
+        unsorted.sort(null);
+        Assert.assertArrayEquals(expectation.toArray(), unsorted.toArray());
     }
-    
 }

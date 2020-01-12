@@ -16,12 +16,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter @Getter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="dir_entry")
@@ -47,15 +49,16 @@ public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
     @ManyToOne
     @JoinColumn(name = "dir_id", nullable=false)
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     DirEntity dir;
     
     @Column(name = "size")
     Long size;
     
     
-    public boolean equals(DirEntryEntity e){
-        return Objects.equals(this.id, e.id);
-    }
+//    public boolean equals(DirEntryEntity e){
+//        return Objects.equals(this.id, e.id);
+//    }
     
     @Override
     public int compareTo(DirEntryEntity o) {
@@ -77,9 +80,9 @@ public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
                     int thisValue = Integer.valueOf(thisMatcher.group());
                     int otherValue = Integer.valueOf(oMatcher.group());
                     if (thisValue > otherValue){
-                        return -1;
-                    }else if (thisValue < otherValue){
                         return 1;
+                    }else if (thisValue < otherValue){
+                        return -1;
                     }
                 }
             }
