@@ -9,22 +9,31 @@ function fileSizeSI(a,b,c,d,e){
 
 $(getRootContent())
 
+$('.close').click(function() {
+   $('.alert').hide();
+})
+
 $('#addDirBtn').click(function(){
-  $.ajax({
-    url:endpoint,
-    type:"POST",
-    data:$("#newDirectoryInput").val(),
-    contentType:"text/plain; charset=utf-8",
-    dataType:"text",
-    async:false,
-    success: function(){
-        getRootContent();
-        $('.alert').hide();
-    },
-    error: function(){
-        $('.alert').show();
-    }
-  });
+  if ($("#newDirectoryInput").val().length != 0){
+    $.ajax({
+      url:endpoint,
+      type:"POST",
+      data:$("#newDirectoryInput").val(),
+      contentType:"text/plain; charset=utf-8",
+      dataType:"text",
+      async:false,
+      success: function(){
+          getRootContent();
+      },
+      error: function(){
+          $('#alertText').text("Ошибка при добавлении каталога, обратитесь к программисту");
+          $(".alert").show();
+      }
+    });
+  }else{
+        $('#alertText').text("Не указано имя каталога");
+        $(".alert").show();
+  }
     
     
 });
