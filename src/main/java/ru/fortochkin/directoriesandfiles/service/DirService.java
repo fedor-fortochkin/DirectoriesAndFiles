@@ -22,12 +22,16 @@ package ru.fortochkin.directoriesandfiles.service;
  */
 
 
-import java.time.OffsetDateTime;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.fortochkin.directoriesandfiles.entity.DirEntity;
 import ru.fortochkin.directoriesandfiles.entity.DirEntryEntity;
@@ -48,7 +52,14 @@ public class DirService {
     public List<DirEntity> getRootContent(){
         List<DirEntity> list = dirRepository.findAll();
         list.stream().forEach( item ->{
-            Long sizeOfFiles = item.getEntries().stream()
+            enrichDirProperties(item);
+        });
+        list.sort(null);
+        return list;
+    }
+    
+    public void enrichDirProperties(DirEntity item){
+                    Long sizeOfFiles = item.getEntries().stream()
                     .filter(e -> e.getType() == Type.FILE)
                     .map(a -> a.getSize())
                     .reduce(0L, Long::sum);
@@ -61,9 +72,6 @@ public class DirService {
             item.setDirsCount(dirsCount);
             item.setFilesCount(filesCount);
             item.setContentSize(sizeOfFiles);
-        });
-        list.sort(null);
-        return list;
     }
     
     public List<DirEntryEntity> getDirectoryContent(Long id){
@@ -74,14 +82,24 @@ public class DirService {
     }
     
     @Transactional
-    public DirEntity addDirectory(String dir){
+    public DirEntity addDirectory(String dir) throws IOException{
+        Set<DirEntryEntity> list = new HashSet<>();
         DirEntity entity = new DirEntity();
+        Files.newDirectoryStream(Paths.get(dir)).forEach(x -> {
+           DirEntryEntity e = new DirEntryEntity();
+           e.setName(x.getFileName().toString());
+           e.setSize(x.toFile().isDirectory() ? null : x.toFile().length());
+           e.setType(x.toFile().isDirectory() ? Type.DIRECTORY : Type.FILE);
+           e.setDir(entity);
+           list.add(e);
+        });
         entity.setBaseDir(dir);
         entity.setContentSize(0L);
         entity.setDirsCount(0L);
-        entity.setEntries(null);
+        entity.setEntries(list);
         entity.setFilesCount(0L);
         entity.setDate(new Date());
+        enrichDirProperties(entity);
         return dirRepository.save(entity);
     } 
 }

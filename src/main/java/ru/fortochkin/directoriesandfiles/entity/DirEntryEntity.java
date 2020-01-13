@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.fortochkin.directoriesandfiles.utils.Utils;
 
 @Entity
 @Setter @Getter
@@ -60,28 +61,6 @@ public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
         if (this.equals(o)){
             return 0;
         }
-        
-        if (this.getType() == DirEntryEntity.Type.DIRECTORY && o.getType() == DirEntryEntity.Type.FILE){
-            return -1;
-        }else if(this.getType() == DirEntryEntity.Type.FILE && o.getType() == DirEntryEntity.Type.DIRECTORY){
-            return 1;
-        }else{
-            Pattern pattern = Pattern.compile("\\d+");
-            Matcher thisMatcher = pattern.matcher(this.getName());
-            Matcher oMatcher = pattern.matcher(o.getName());
-            
-            while(thisMatcher.find() && oMatcher.find()){
-                if (thisMatcher.start() == oMatcher.start()){
-                    int thisValue = Integer.valueOf(thisMatcher.group());
-                    int otherValue = Integer.valueOf(oMatcher.group());
-                    if (thisValue > otherValue){
-                        return 1;
-                    }else if (thisValue < otherValue){
-                        return -1;
-                    }
-                }
-            }
-            return this.getName().toLowerCase().compareTo(o.getName().toLowerCase());
-        }
+        return Utils.compare(this.getType(), this.getName(), o.getType(), o.getName());
     }
 }
