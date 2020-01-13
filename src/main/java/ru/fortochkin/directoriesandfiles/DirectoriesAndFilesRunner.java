@@ -16,8 +16,6 @@
 
 package ru.fortochkin.directoriesandfiles;
 
-import java.util.TimeZone;
-import javax.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -40,11 +38,6 @@ public class DirectoriesAndFilesRunner implements EmbeddedServletContainerCustom
         MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
         mappings.add("html", "text/html;charset=utf-8");
         cesc.setMimeMappings(mappings );
-    }
-    
-    @PostConstruct
-    public void init(){
-      TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,11 +34,11 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm",timezone="Europe/Moscow")
     private Date date;
     
     @Column(name = "baseDir", nullable = false)
@@ -51,17 +50,14 @@ public class DirEntity implements Serializable,Comparable<DirEntity>{
     private Set<DirEntryEntity> entries;
     
     @Transient
-    Long dirsCount;
+    private Long dirsCount;
     
     @Transient
-    Long filesCount;
+    private Long filesCount;
     
     @Transient
-    Long contentSize;
+    private Long contentSize;
     
-//    public boolean equals(DirEntryEntity e){
-//        return Objects.equals(this.id, e.id);
-//    }
         
     @Override
     public int compareTo(DirEntity o) {

@@ -19,7 +19,6 @@ package ru.fortochkin.directoriesandfiles.entity;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import ru.fortochkin.directoriesandfiles.entity.DirEntryEntity.Type;
 

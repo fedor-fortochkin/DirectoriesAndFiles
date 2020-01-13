@@ -2,7 +2,6 @@ package ru.fortochkin.directoriesandfiles.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Column;
@@ -37,28 +36,24 @@ public class DirEntryEntity implements Serializable, Comparable<DirEntryEntity>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
     
     @Column(name = "name", nullable = false)
-    String name;
+    private String name;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    Type type;
+    private Type type;
     
     @ManyToOne
     @JoinColumn(name = "dir_id", nullable=false)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
-    DirEntity dir;
+    private DirEntity dir;
     
     @Column(name = "size")
-    Long size;
+    private Long size;
     
-    
-//    public boolean equals(DirEntryEntity e){
-//        return Objects.equals(this.id, e.id);
-//    }
     
     @Override
     public int compareTo(DirEntryEntity o) {
