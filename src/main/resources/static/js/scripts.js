@@ -39,12 +39,16 @@ $('#addDirBtn').click(function(){
 });
 
 function getRootContent(){
-    data = $.get(endpoint,function(data) {
+    $.ajax({
+        url: endpoint,
+        success: function (data) {
         $(rootContentTable+" tbody").empty();
-        data.forEach(function(elem){
-            $(rootContentTable).append('<tr><td>'+elem.date+'</td><td>'+elem.baseDir+'</td><td>'+elem.dirsCount+'</td><td>'+elem.filesCount+'</td><td>'+fileSizeSI(elem.contentSize)+'</td><td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dirContent" data-id="'+elem.id+'" data-title="'+elem.baseDir+' '+elem.date+'">Файлы</button></td></tr>');
-        });
-    })    
+            data.forEach(function(elem){
+                $(rootContentTable).append('<tr><td>'+elem.date+'</td><td>'+elem.baseDir+'</td><td>'+elem.dirsCount+'</td><td>'+elem.filesCount+'</td><td>'+fileSizeSI(elem.contentSize)+'</td><td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dirContent" data-id="'+elem.id+'" data-title="'+elem.baseDir+' '+elem.date+'">Файлы</button></td></tr>');
+            });
+        },
+        async: false
+    });  
 }
 
 $('#dirContent').on('show.bs.modal', function (event) {
